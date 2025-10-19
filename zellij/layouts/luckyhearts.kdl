@@ -1,0 +1,22 @@
+layout {
+	tab name="mobile-front" focus=true {
+		pane {
+			cwd "/home/inti/IdeaProjects/theluckyhearts/front"
+			command "nvim"
+		}
+	}
+	tab name="admin-panel" {
+		pane {
+			cwd "/home/inti/IdeaProjects/theluckyhearts/front-web-admin"
+			command "nvim"
+		}
+
+	}
+	tab name="backend" {
+		pane {
+			cwd "/home/inti/IdeaProjects/theluckyhearts/back"
+			command "nvim"
+		}
+
+	}
+}
