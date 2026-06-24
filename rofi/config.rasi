@@ -1,0 +1,26 @@
+/* ╔══════════════════════════════════════════════════════════════════╗
+ * ║  config.rasi — rofi behaviour                                      ║
+ * ║  Launched by Hyprland via `rofi -show drun` (SUPER + Space).       ║
+ * ╚══════════════════════════════════════════════════════════════════╝ */
+
+configuration {
+    modes:                  "drun,run,window";
+    show-icons:             true;
+    icon-theme:             "Papirus";   /* falls back gracefully if absent */
+    drun-display-format:    "{name}";
+    display-drun:           "  Apps";
+    display-run:            "  Run";
+    display-window:         "  Windows";
+    window-format:          "{w}  ·  {c}  ·  {t}";
+    terminal:               "ghostty";
+    matching:               "fuzzy";
+    sort:                   true;
+    sorting-method:         "fzf";
+    case-sensitive:         false;
+    cycle:                  true;
+    hover-select:           true;
+    me-select-entry:        "";          /* left-click selects...           */
+    me-accept-entry:        "MousePrimary"; /* ...and confirms (one click)  */
+}
+
+@theme "theme.rasi"
