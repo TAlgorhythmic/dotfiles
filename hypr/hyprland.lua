@@ -36,11 +36,11 @@ hl.monitor({
 ---------------------
 
 -- Set programs that you use
-local terminal		= "ghostty"
-local fileManager	= "dolphin"
+local terminal			= "ghostty"
+local fileManager		= "dolphin"
 local menu			= "rofi -show drun"
 local music			= "audacious"
-local browser		= "zen-browser"
+local browser			= "zen-browser"
 
 -------------------
 ---- AUTOSTART ----
@@ -52,15 +52,18 @@ local browser		= "zen-browser"
 -- Or execute your favorite apps at launch like this:
 --
 hl.on("hyprland.start", function ()
-	-- eww taskbar (replaces hyprpanel). Re-enable hyprpanel if you prefer it.
+	-- ironbar taskbar (replaces the old eww bar; `eww open bar` no longer runs).
+	-- The eww daemon stays up purely for the SUPER+A mouse-accel picker.
 	-- hl.exec_cmd("hyprpanel")
-	hl.exec_cmd("eww daemon")
-	hl.exec_cmd("eww open bar")
+	hl.exec_cmd("ironbar")
 	hl.exec_cmd("easyeffects --gapplication-service")
 	hl.exec_cmd("ghostty --class=com.scratch.ghostty")
 	hl.exec_cmd("hypridle")
 	hl.exec_cmd("hyprpaper")
-	hl.exec_cmd("bash -c 'sleep 1; WP=$(find ~/Pictures/wallpapers -type f | shuf -n1); hyprctl hyprpaper preload \"$WP\"; hyprctl hyprpaper wallpaper \",$WP\"'")
+	-- Random wallpaper. `hyprctl hyprpaper preload` returns "invalid hyprpaper
+	-- request" on hyprpaper 0.8.4, so it's dropped: `wallpaper` loads the image
+	-- itself. The retry loop covers the daemon not being up yet after 1s.
+	hl.exec_cmd("bash -c 'WP=$(find ~/Pictures/wallpapers -type f | shuf -n1); for i in 1 2 3 4 5; do sleep 1; hyprctl hyprpaper wallpaper \",$WP\" && break; done'")
 end)
 
 
@@ -82,7 +85,9 @@ hl.env("GBM_BACKEND", "nvidia-drm")
 hl.env("WLR_NO_HARDWARE_CURSORS", "1")
 hl.env("WLR_BACKEND", "vulkan")
 hl.env("QT_QPA_PLATFORM", "wayland")
+hl.env("QT_QPA_PLATFORMTHEME", "qt5ct:qt6ct")
 hl.env("GDK_BACKEND", "wayland")
+hl.env("GTK_IM_MODULE", "simple")
 
 
 -----------------------
@@ -333,10 +338,6 @@ for i = 1, 10 do
     hl.bind(mainMod .. " + SHIFT + " .. key,     hl.dsp.window.move({ workspace = i }))
 end
 
--- Example special workspace (scratchpad)
-hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
-
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
@@ -369,14 +370,17 @@ hl.bind("MOD5 + down", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%
 hl.bind("MOD5 + right", hl.dsp.exec_cmd("playerctl next"),     { locked = true })
 hl.bind("MOD5 + left",  hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 
-hl.bind("ALT + F", hl.dsp.workspace.toggle_special("term"))
+hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("term"))
 
 hl.window_rule({ match = { class = "^(com.scratch.ghostty)$" }, workspace = "special:term" })
 hl.window_rule({ match = { class = "^(com.scratch.ghostty)$" }, float = true })
 hl.window_rule({ match = { class = "^(com.scratch.ghostty)$" }, size = { "monitor_w*0.7", "monitor_h*0.6" } })
 hl.window_rule({ match = { class = "^(com.scratch.ghostty)$" }, center = true })
 
-hl.window_rule({ match = { fullscreen = true }, immediate = true })
+hl.window_rule({  match = { class = "CheatBreaker 1.7.10" }, immediate = true, fullscreen = true })
+hl.window_rule({  match = { class = "CheatBreaker 1.8.9" }, immediate = true, fullscreen = true })
+hl.window_rule({  match = { class = "^Minecraft.*$" }, immediate = true, fullscreen = true })
+hl.window_rule({  match = { class = "zen" }, fullscreen = true })
 
 hl.bind(mainMod .. " + R", hl.dsp.submap("resize"))
 

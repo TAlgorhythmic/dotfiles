@@ -1,0 +1,188 @@
+# ═════════════════════════════════════════════════════════════════════
+#  TASKBAR — port of the old eww bar
+#  Left  : workspaces + focused window title
+#  Center: now playing (marquee) + clock/date (calendar popup)
+#  Right : volume + network + notifications + power
+# ═════════════════════════════════════════════════════════════════════
+
+name: "top"
+position: "top"
+height: 40
+layer: "top"
+exclusive_zone: true
+
+# Popups are real GTK popovers on 0.19. `popup_autohide` closes them on outside
+# click; on Hyprland this can grab keyboard focus while a popup is open.
+popup_gap: 8
+popup_autohide: true
+
+start:
+  # ── Workspaces ─────────────────────────────────────────────────────
+  # 1..3 are always shown (`favorites`) and get `.inactive` while empty.
+  # Anything above that only appears once it's actually in use.
+  - type: "workspaces"
+    all_monitors: false
+    sort: "index"
+    favorites: ["1", "2", "3"]
+    # Hyprland scratchpads are their own workspaces; the eww bar never showed them.
+    hidden: ["special", "special:term", "special:magic"]
+
+  # ── Active window title ────────────────────────────────────────────
+  - type: "focused"
+    show_icon: false
+    show_title: true
+    truncate:
+      mode: "end"
+      max_length: 55
+
+center:
+  # ── Clock ──────────────────────────────────────────────────────────
+  # Click opens a calendar popup. Day/month names follow $LC_TIME.
+  - type: "clock"
+    name: "clock"
+    format: '%H:%M  <span weight="normal" size="smaller" foreground="#8b9491">%A, %d %B</span>'
+    format_popup: "%H:%M:%S"
+    show_week_numbers: false
+
+end:
+  # ── Now playing ────────────────────────────────────────────────────
+  # No popup, no transport buttons — just the status icon and a title
+  # that scrolls Spotify-style once it outgrows `marquee.max_length`.
+  # Sits here rather than in `center` so the clock centres on its own.
+  - type: "music"
+    player_type: "mpris"
+    format: "{title}  ·  {artist}"
+    show_status_icon: true
+    disable_popup: true
+    icons:
+      play: "󰎈"
+      pause: "󰏤"
+    marquee:
+      enable: true
+      max_length: 30
+      scroll_speed: 0.4
+      pause_duration: 3000
+      separator: "   ·   "
+      on_hover: "pause"
+    # The bar has no visible transport controls, but the widget is a button
+    # anyway — so clicking the title toggles playback. Delete to disable.
+    on_click_left: "playerctl play-pause"
+
+  # ── Volume ─────────────────────────────────────────────────────────
+  # Mimics the old eww behaviour: scroll to change, click to mute.
+  # The built-in mixer popup is disabled to match.
+  - type: "volume"
+    format: '<span foreground="#00ffcd" size="larger">{icon}</span> <span size="smaller">{percentage}%</span>'
+    mute_format: '<span foreground="#8b9491" size="larger">{icon}</span> <span foreground="#8b9491" size="smaller">{percentage}%</span>'
+    show_sources: false
+    max_volume: 100
+    disable_popup: true
+    icons:
+      volume: "󰕾"
+      muted: "󰖁"
+    profiles:
+      medium:
+        when: 66.66
+        icons:
+          volume: "󰖀"
+      low:
+        when: 33.33
+        icons:
+          volume: "󰕿"
+    on_click_left: "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    on_scroll_up: "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"
+    on_scroll_down: "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+
+  # ── Network ────────────────────────────────────────────────────────
+  # iwd/sysfs based — the old eww script, emitting Pango markup.
+  - type: "label"
+    name: "network"
+    label: "{{poll:12000:$HOME/.config/ironbar/scripts/network.sh}}"
+
+  # ── Notifications ──────────────────────────────────────────────────
+  # Native SwayNC integration: shows count/DnD state, click opens the panel.
+  - type: "notifications"
+    show_count: true
+    icons:
+      closed_none: "󰂚"
+      closed_some: "󰂚"
+      closed_dnd: "󰂛"
+      open_none: "󰂜"
+      open_some: "󰂜"
+      open_dnd: "󰂛"
+
+  # ── Power ──────────────────────────────────────────────────────────
+  - type: "custom"
+    name: "power"
+    bar:
+      - type: "button"
+        name: "power-btn"
+        label: "󰐥"
+        on_click: "popup:toggle"
+    popup:
+      - type: "box"
+        orientation: "vertical"
+        widgets:
+          - type: "label"
+            name: "pm-head"
+            label: "󰐥   Power"
+          - type: "box"
+            name: "pm-row"
+            widgets:
+              - type: "button"
+                class: "pm-item"
+                on_click: "!$HOME/.config/ironbar/scripts/powermenu.sh lock"
+                widgets:
+                  - type: "box"
+                    orientation: "vertical"
+                    widgets:
+                      - { type: "label", class: "pm-ico", label: "󰌾" }
+                      - { type: "label", class: "pm-lbl", label: "Lock" }
+              - type: "button"
+                class: "pm-item"
+                on_click: "!$HOME/.config/ironbar/scripts/powermenu.sh logout"
+                widgets:
+                  - type: "box"
+                    orientation: "vertical"
+                    widgets:
+                      - { type: "label", class: "pm-ico", label: "󰍃" }
+                      - { type: "label", class: "pm-lbl", label: "Logout" }
+              - type: "button"
+                class: "pm-item"
+                on_click: "!$HOME/.config/ironbar/scripts/powermenu.sh suspend"
+                widgets:
+                  - type: "box"
+                    orientation: "vertical"
+                    widgets:
+                      - { type: "label", class: "pm-ico", label: "󰒲" }
+                      - { type: "label", class: "pm-lbl", label: "Suspend" }
+          - type: "box"
+            name: "pm-row"
+            widgets:
+              - type: "button"
+                class: "pm-item"
+                on_click: "!$HOME/.config/ironbar/scripts/powermenu.sh reboot"
+                widgets:
+                  - type: "box"
+                    orientation: "vertical"
+                    widgets:
+                      - { type: "label", class: "pm-ico", label: "󰜉" }
+                      - { type: "label", class: "pm-lbl", label: "Reboot" }
+              - type: "button"
+                class: "pm-item"
+                on_click: "!$HOME/.config/ironbar/scripts/powermenu.sh shutdown"
+                widgets:
+                  - type: "box"
+                    orientation: "vertical"
+                    widgets:
+                      - { type: "label", class: "pm-ico", label: "󰐥" }
+                      - { type: "label", class: "pm-lbl", label: "Shutdown" }
+              - type: "button"
+                class: "pm-item"
+                on_click: "popup:close"
+                widgets:
+                  - type: "box"
+                    orientation: "vertical"
+                    widgets:
+                      - { type: "label", class: "pm-ico", label: "󰅖" }
+                      - { type: "label", class: "pm-lbl", label: "Cancel" }
