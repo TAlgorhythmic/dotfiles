@@ -5,23 +5,23 @@
  * ═══════════════════════════════════════════════════════════════════ */
 
 :root {
-    --accent:      #F06292;
-    --accent-line: rgba(240, 98, 146, 0.18);
-    --accent-edge: rgba(240, 98, 146, 0.25);
-    --accent-hov:  rgba(240, 98, 146, 0.10);
-    --accent-soft: rgba(240, 98, 146, 0.18);
-    --accent-glow: rgba(240, 98, 146, 0.55);
+    --accent:      #00ffcd;
+    --accent-line: rgba(0, 255, 205, 0.18);
+    --accent-edge: rgba(0, 255, 205, 0.25);
+    --accent-hov:  rgba(0, 255, 205, 0.10);
+    --accent-soft: rgba(0, 255, 205, 0.18);
+    --accent-glow: rgba(0, 255, 205, 0.55);
 
-    --bg:          rgba(33, 33, 33, 0.92);
-    --bg-bar:      rgba(33, 33, 33, 0.82);
+    --bg:          rgba(18, 20, 22, 0.92);
+    --bg-bar:      rgba(17, 24, 31, 0.82);
     --bg-elev:     rgba(255, 255, 255, 0.04);
 
-    --fg:          #ffffff;
-    --fg-dim:      #9e9e9e;
-    --on-accent:   #1a1a1a;
+    --fg:          #e6e6e6;
+    --fg-dim:      #8b9491;
+    --on-accent:   #0b1115;
 
-    --danger:      #F44336;
-    --danger-hov:  rgba(244, 67, 54, 0.12);
+    --danger:      #ff5f5f;
+    --danger-hov:  rgba(255, 95, 95, 0.12);
 }
 
 /* Adwaita Sans for text; Symbols Nerd Font supplies the icon glyphs. */
@@ -348,7 +348,7 @@ popover > arrow {
 }
 
 .popup-clock .calendar label.day-number.other-month {
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(139, 148, 145, 0.45);
 }
 
 .popup-clock .calendar label.day-number:selected {
@@ -402,8 +402,8 @@ popover > arrow {
 
 .pm-item:hover {
     background-color: var(--accent-hov);
-    border-color: rgba(240, 98, 146, 0.45);
-    box-shadow: 0 0 14px rgba(240, 98, 146, 0.25);
+    border-color: rgba(0, 255, 205, 0.45);
+    box-shadow: 0 0 14px rgba(0, 255, 205, 0.25);
 }
 
 .pm-item:hover .pm-ico {

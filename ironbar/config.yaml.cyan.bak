@@ -40,7 +40,7 @@ center:
   # Click opens a calendar popup. Day/month names follow $LC_TIME.
   - type: "clock"
     name: "clock"
-    format: '%H:%M  <span weight="normal" size="smaller" foreground="#9e9e9e">%A, %d %B</span>'
+    format: '%H:%M  <span weight="normal" size="smaller" foreground="#8b9491">%A, %d %B</span>'
     format_popup: "%H:%M:%S"
     show_week_numbers: false
 
@@ -72,8 +72,8 @@ end:
   # Mimics the old eww behaviour: scroll to change, click to mute.
   # The built-in mixer popup is disabled to match.
   - type: "volume"
-    format: '<span foreground="#F06292" size="larger">{icon}</span> <span size="smaller">{percentage}%</span>'
-    mute_format: '<span foreground="#9e9e9e" size="larger">{icon}</span> <span foreground="#9e9e9e" size="smaller">{percentage}%</span>'
+    format: '<span foreground="#00ffcd" size="larger">{icon}</span> <span size="smaller">{percentage}%</span>'
+    mute_format: '<span foreground="#8b9491" size="larger">{icon}</span> <span foreground="#8b9491" size="smaller">{percentage}%</span>'
     show_sources: false
     max_volume: 100
     disable_popup: true

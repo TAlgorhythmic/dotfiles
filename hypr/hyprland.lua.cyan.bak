@@ -16,9 +16,7 @@
 -- require("myColors")
 
 -- Vars
-local primary_color = "rgba(F06292ee)"   -- Orchis-Pink-Dark accent (#F06292)
-local border_color  = "rgba(F0629255)"   -- window border: 1px, deliberately faint
-local glow_color    = "rgba(F0629222)"   -- barely-there halo around the focused window
+local primary_color = "rgba(00ffcdee)"
 
 ------------------
 ---- MONITORS ----
@@ -75,32 +73,22 @@ end)
 
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
 
---
--- NVIDIA SPECIFIC
--- hl.env("LIBVA_DRIVER_NAME", "nvidia")
--- hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
--- hl.env("GBM_BACKEND", "nvidia-drm")
--- hl.env("WLR_NO_HARDWARE_CURSORS", "1")
---
--- INTEL SPECIFIC
--- hl.env("LIBVA_DRIVER_NAME", "iHD")
---
-
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("LIBVA_DRIVER_NAME", "nvidia")
+hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
 hl.env("CLUTTER_BACKEND", "wayland")
 hl.env("XDG_SESSION_TYPE", "wayland")
 hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
 hl.env("MOZ_ENABLE_WAYLAND", "1")
+hl.env("GBM_BACKEND", "nvidia-drm")
+hl.env("WLR_NO_HARDWARE_CURSORS", "1")
 hl.env("WLR_BACKEND", "vulkan")
 hl.env("QT_QPA_PLATFORM", "wayland")
 hl.env("QT_QPA_PLATFORMTHEME", "qt5ct:qt6ct")
 hl.env("GDK_BACKEND", "wayland")
 hl.env("GTK_IM_MODULE", "simple")
 
-local pictures_dir = os.getenv("HOME") .. "/Pictures"
-hl.env("XDG_PICTURES_DIR", pictures_dir)
-hl.env("HYPRSHOT_DIR", pictures_dir .. "Screenshots")
 
 -----------------------
 ----- PERMISSIONS -----
@@ -134,7 +122,7 @@ hl.config({
         border_size = 1,
 
         col = {
-            active_border   = { colors = {border_color}, angle = 45 },
+            active_border   = { colors = {primary_color}, angle = 45 },
             inactive_border = "rgba(00000000)",
         },
 
@@ -175,10 +163,10 @@ hl.config({
         },
 		glow = {
 			enabled = true,
-			range = 3,
+			range = 10,
 			render_power = 2,
-			color = glow_color,
-			color_inactive = "rgba(00000000)"
+			color = primary_color,
+			color_inactive = "rgba(000000ee)"
 		},
 --		motion_blur = {
 --			enabled = true,
@@ -324,14 +312,14 @@ local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("ghostty --class=com.scratch.ghostty"))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
-hl.bind(mainMod .. " + A", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/eww/scripts/launch.sh")) -- mouse accel profile picker
+hl.bind(mainMod .. " + A", hl.dsp.exec_cmd("/home/inti/.config/eww/scripts/launch.sh")) -- mouse accel profile picker
 local closeWindowBind = hl.bind(mainMod .. " + C", hl.dsp.window.close())
 -- closeWindowBind:set_enabled(false)
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd(music))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + F", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
-hl.bind(mainMod .. " + P", hl.dsp.exec_cmd(os.getenv("HOME") .. "/bin/zellij-picker")) -- zellij session picker
+hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("/home/inti/.local/bin/zellij-picker")) -- zellij session picker
 hl.bind("CTRL + Print", hl.dsp.exec_cmd("hyprshot -m region"))
 hl.bind("Print", hl.dsp.exec_cmd("hyprpicker -a"))
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
@@ -406,7 +394,7 @@ end)
 
 -- Keyboard control for the eww mouse-accel picker (entered by launch.sh)
 hl.define_submap("accel", function()
-	local nav = os.getenv("HOME") .. "/.config/eww/scripts/nav.sh"
+	local nav = "/home/inti/.config/eww/scripts/nav.sh"
 	hl.bind("up",     hl.dsp.exec_cmd(nav .. " move up"))
 	hl.bind("k",      hl.dsp.exec_cmd(nav .. " move up"))
 	hl.bind("down",   hl.dsp.exec_cmd(nav .. " move down"))

@@ -1,6 +1,6 @@
 # ╔══════════════════════════════════════════════════════════════════╗
 # ║  hyprlock — lock screen for Hyprland                               ║
-# ║  Blurred-desktop style, pink accent (rgba(F06292ee)).             ║
+# ║  Blurred-desktop style, cyan accent (rgba(00ffcdee)).             ║
 # ║  Triggered by hypridle via `loginctl lock-session`.               ║
 # ╚══════════════════════════════════════════════════════════════════╝
 
@@ -26,7 +26,7 @@ background {
 label {
     monitor   =
     text      = cmd[update:1000] echo "$(date '+%H:%M')"
-    color     = rgba(F06292ee)
+    color     = rgba(00ffcdee)
     font_size = 112
     font_family = IosevkaTerm Nerd Font ExtraBold
     position  = 0, 220
@@ -40,7 +40,7 @@ label {
 label {
     monitor   =
     text      = cmd[update:18000000] echo "$(date '+%A, %d %B')"
-    color     = rgba(ffffffff)
+    color     = rgba(d0fff7ff)
     font_size = 22
     font_family = IosevkaTerm Nerd Font
     position  = 0, 120
@@ -58,14 +58,14 @@ input-field {
     dots_center  = true
     rounding     = 14
 
-    outer_color  = rgba(F06292ee)
-    inner_color  = rgba(212121dd)
-    font_color   = rgba(ffffffff)
-    check_color  = rgba(F06292ee)   # while verifying
-    fail_color   = rgba(F44336ee)   # wrong password
+    outer_color  = rgba(00ffcdee)
+    inner_color  = rgba(11181fdd)
+    font_color   = rgba(d0fff7ff)
+    check_color  = rgba(00ffcdee)   # while verifying
+    fail_color   = rgba(ff4d6dee)   # wrong password
 
-    placeholder_text = <span foreground="##9e9e9e">  $USER</span>
-    fail_text        = <span foreground="##F44336">  $FAIL  ($ATTEMPTS)</span>
+    placeholder_text = <span foreground="##8a9a97">  $USER</span>
+    fail_text        = <span foreground="##ff4d6d">  $FAIL  ($ATTEMPTS)</span>
 
     position     = 0, -40
     halign       = center
@@ -76,7 +76,7 @@ input-field {
 label {
     monitor   =
     text      = 󰌾  locked
-    color     = rgba(9e9e9ecc)
+    color     = rgba(8a9a97cc)
     font_size = 13
     font_family = IosevkaTerm Nerd Font
     position  = 0, -120

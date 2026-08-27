@@ -1,6 +1,6 @@
 /* ╔══════════════════════════════════════════════════════════════════╗
  * ║  theme.rasi — main launcher look                                   ║
- * ║  Centered, translucent, pink-accented to match Hyprland.          ║
+ * ║  Centered, translucent, cyan-accented to match Hyprland.          ║
  * ╚══════════════════════════════════════════════════════════════════╝ */
 
 @import "colors.rasi"
@@ -19,7 +19,7 @@ window {
     anchor:       center;
     width:        640px;
     border:       1px;
-    border-color: @accent-soft;      /* echoes Hypr 1px accent border          */
+    border-color: @cyan-soft;      /* echoes Hypr 1px cyan border          */
     border-radius: 14px;           /* matches hyprlock input rounding      */
     background-color: @base;
     padding:      0px;
@@ -36,7 +36,7 @@ mainbox {
 inputbar {
     background-color: @surface;
     border:           1px;
-    border-color:     @accent-soft;
+    border-color:     @cyan-soft;
     border-radius:    12px;
     padding:          12px 16px;
     spacing:          12px;
@@ -44,7 +44,7 @@ inputbar {
 }
 
 prompt {
-    text-color:       @accent;
+    text-color:       @cyan;
     /* Adwaita Sans for text; the  glyph resolves via Pango fallback to a Nerd Font */
     font:             "Adwaita Sans 13";
     vertical-align:   0.5;
@@ -61,7 +61,7 @@ entry {
 message {
     background-color: @surface;
     border:           1px;
-    border-color:     @accent-soft;
+    border-color:     @cyan-soft;
     border-radius:    12px;
     padding:          10px 16px;
 }
@@ -95,10 +95,10 @@ element alternate.normal {
 }
 
 element selected.normal {
-    background-color: @accent-dim;
-    text-color:       @accent;
+    background-color: @cyan-dim;
+    text-color:       @cyan;
     border:           1px;
-    border-color:     @accent-soft;
+    border-color:     @cyan-soft;
 }
 
 element normal.urgent,
@@ -114,7 +114,7 @@ element-icon {
 
 element-text {
     vertical-align:   0.5;
-    highlight:        bold #F06292ff;   /* highlight matched chars in accent (literal: highlight rejects vars) */
+    highlight:        bold #00ffcdff;   /* highlight matched chars in accent (literal: highlight rejects vars) */
     background-color: transparent;
     text-color:       inherit;
 }

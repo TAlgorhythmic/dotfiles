@@ -1,22 +1,22 @@
 /* ╔══════════════════════════════════════════════════════════════════╗
  * ║  colors.rasi — shared palette                                      ║
- * ║  Mirrors the Hyprland / hyprlock cyan theme (#00ffcd accent).      ║
+ * ║  Mirrors the Hyprland / hyprlock accent theme (#F06292 accent).      ║
  * ╚══════════════════════════════════════════════════════════════════╝ */
 
 * {
     /* core palette */
-    cyan:        #00ffcdff;   /* primary accent (matches active border / clock) */
-    cyan-dim:    #00ffcd22;   /* translucent accent for hover/selection fills   */
-    cyan-soft:   #00ffcd55;   /* subtle accent (borders, separators)            */
+    accent:        #F06292ff;   /* primary accent (matches active border / clock) */
+    accent-dim:    #F0629222;   /* translucent accent for hover/selection fills   */
+    accent-soft:   #F0629255;   /* subtle accent (borders, separators)            */
 
-    base:        #11181fcc;   /* window bg — translucent so Hypr blur shows     */
-    base-solid:  #11181fff;
-    surface:     #1a242dee;   /* raised elements (input box, etc.)              */
+    base:        #212121cc;   /* window bg — translucent so Hypr blur shows     */
+    base-solid:  #212121ff;
+    surface:     #2C2C2Cee;   /* raised elements (input box, etc.)              */
 
-    fg:          #d0fff7ff;   /* primary text (matches hyprlock font_color)     */
-    fg-muted:    #8a9a97ff;   /* secondary / placeholder text                   */
+    fg:          #ffffffff;   /* primary text (matches hyprlock font_color)     */
+    fg-muted:    #ffffff80;   /* secondary / placeholder text                   */
 
-    red:         #ff4d6dff;   /* urgent / error (matches fail_color)            */
+    red:         #F44336ff;   /* urgent / error (matches fail_color)            */
 
     transparent: #00000000;
 }
