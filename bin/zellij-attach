@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║  zellij-attach — attach to a zellij session inside a terminal.     ║
+# ║  Run by zellij-menu via `ghostty -e`; the terminal window lives    ║
+# ║  exactly as long as this script does.                              ║
+# ║                                                                    ║
+# ║  Default: when you leave the session (Alt+d detach, window close,  ║
+# ║  or the session ending), the session is killed and the window      ║
+# ║  closes with it.  Pass --keep to detach and leave it running.      ║
+# ╚══════════════════════════════════════════════════════════════════╝
+set -uo pipefail
+
+keep=0
+if [[ ${1-} == --keep ]]; then keep=1; shift; fi
+
+session=${1-}
+if [[ -z $session ]]; then
+    echo "usage: zellij-attach [--keep] <session-name>" >&2
+    exit 2
+fi
+
+if (( keep )); then
+    # Plain attach: detaching leaves the session running in the background.
+    exec zellij attach --create "$session"
+fi
+
+# Kill-on-exit. Runs on a clean detach, on the session ending, and on the
+# window being closed (SIGHUP/SIGTERM reach us once the client is gone).
+cleanup() {
+    trap - EXIT HUP TERM
+    zellij kill-session "$session" >/dev/null 2>&1
+    exit 0
+}
+trap cleanup EXIT HUP TERM
+
+zellij attach --create "$session"

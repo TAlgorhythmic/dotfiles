@@ -1,0 +1,81 @@
+/* Accent-on-dark, matching ~/.config/rofi/colors.rasi and the Hyprland accent. */
+
+window {
+  background: transparent;
+}
+
+.root {
+  background-color: rgba(33, 33, 33, 0.85);   /* @base      #212121 */
+  border: 1px solid rgba(240, 98, 146, 0.33);  /* @accent-soft #F0629255 */
+  border-radius: 14px;
+  padding: 18px;
+  color: #ffffff;                             /* @fg */
+  font-family: "Adwaita Sans", sans-serif;
+  font-size: 12pt;
+}
+
+entry {
+  background-color: rgba(44, 44, 44, 0.93);   /* @surface   #2C2C2C */
+  border: 1px solid rgba(240, 98, 146, 0.33);
+  border-radius: 12px;
+  padding: 9px 14px;
+  min-height: 0;
+  color: #ffffff;
+  caret-color: #F06292;
+  box-shadow: none;
+  outline: none;
+}
+
+entry:focus-within {
+  border-color: #F06292;                      /* @accent */
+  background-color: rgba(240, 98, 146, 0.07);
+}
+
+entry > text > placeholder {
+  color: rgba(255, 255, 255, 0.5);                             /* @fg-muted */
+}
+
+entry.error {
+  border-color: #F44336;                      /* @red */
+}
+
+.hint {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10pt;
+  padding: 0 6px;
+}
+
+/* ScrolledWindow wraps the (non-scrollable) ListBox in a viewport whose
+   .view class carries the theme's solid background — clear the whole chain. */
+scrolledwindow,
+viewport,
+.view,
+list {
+  background-color: transparent;
+  background-image: none;
+}
+
+list > row {
+  padding: 9px 14px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+}
+
+list > row:selected {
+  background-color: rgba(240, 98, 146, 0.13);  /* @accent-dim */
+  border-color: rgba(240, 98, 146, 0.33);
+}
+
+list > row:selected .name {
+  color: #F06292;
+}
+
+.name {
+  color: #ffffff;
+}
+
+.meta {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10pt;
+}

@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║  ghostty-quick-toggle — toggle Ghostty's quick terminal (SUPER+Q). ║
+# ║  Starts the daemon first if it is not running, so the shortcut     ║
+# ║  keeps working after a crash or a manual kill.                     ║
+# ║                                                                    ║
+# ║  --start-only   bring the daemon up but do not show the terminal   ║
+# ║                 (used from the hyprland.start autostart block).    ║
+# ╚══════════════════════════════════════════════════════════════════╝
+#
+# The daemon MUST live in a systemd *scope* named app-<app-id>-<tag>.scope:
+# xdg-desktop-portal reads the app id from the cgroup and refuses the
+# GlobalShortcuts request with "An app id is required" otherwise. A bare
+# process (session-N.scope) and a transient .service unit both fail.
+#
+# --quit-after-last-window-closed=false is what keeps the daemon alive when
+# the quick terminal itself is closed; on Linux that option defaults to true
+# and the quick terminal is the daemon's only surface.
+#
+# Note: quick-terminal-autohide must stay false in ~/.config/ghostty/config.
+# With it on, the terminal hides on focus loss without the toggle state
+# following, and the next press never brings it back.
+
+set -u
+
+UNIT="app-com.mitchellh.ghostty-quick"
+# Ghostty derives this id from its own `keybind = global:super+q=...` line in
+# ~/.config/ghostty/config. Change that trigger and this id changes too.
+SHORTCUT="com.mitchellh.ghostty:LOGO+q"
+
+START_ONLY=0
+[ "${1-}" = "--start-only" ] && START_ONLY=1
+
+toggle() { hyprctl dispatch "hl.dsp.global(\"$SHORTCUT\")" >/dev/null 2>&1; }
+# Readiness only, NOT visibility: the layer stays mapped while the terminal is
+# hidden, so this just tells us the daemon has claimed its surface. It goes
+# back to absent when the daemon dies.
+mapped() { hyprctl layers -j | grep -q ghostty-quick-terminal; }
+
+start_daemon() {
+	systemctl --user reset-failed "$UNIT.scope" 2>/dev/null
+	setsid systemd-run --user --scope --unit="$UNIT" \
+		ghostty --initial-window=false --quit-after-last-window-closed=false \
+		>/dev/null 2>&1 </dev/null &
+}
+
+if systemctl --user is-active --quiet "$UNIT.scope"; then
+	[ "$START_ONLY" = 1 ] && exit 0
+	toggle
+	exit 0
+fi
+
+start_daemon
+
+if [ "$START_ONLY" = 1 ]; then
+	# Just wait for the scope to come up; nothing to show yet.
+	for _ in $(seq 1 40); do
+		sleep 0.25
+		systemctl --user is-active --quiet "$UNIT.scope" && exit 0
+	done
+	exit 1
+fi
+
+# Daemon was gone: toggle once it has registered with the portal.
+# `hyprctl globalshortcuts` still lists shortcuts whose client has died, so it
+# cannot be used as a readiness check -- poll for the surface instead.
+for _ in $(seq 1 40); do
+	sleep 0.25
+	toggle
+	sleep 0.25
+	mapped && exit 0
+done
+
+hyprctl notify 3 5000 "rgb(f06292)" "Ghostty quick terminal failed to start" >/dev/null 2>&1
+exit 1
