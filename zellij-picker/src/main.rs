@@ -407,37 +407,3 @@ impl Ui {
         self.window.close();
     }
 }
-
-/// zellij session name for a directory: its basename, minus awkward characters.
-fn session_name(path: &std::path::Path) -> String {
-    let base = path
-        .file_name()
-        .map(|s| s.to_string_lossy().into_owned())
-        .unwrap_or_default();
-    let cleaned: String = base
-        .chars()
-        .map(|c| if c.is_alphanumeric() || matches!(c, '-' | '_' | '.') { c } else { '-' })
-        .collect();
-    if cleaned.is_empty() { "zellij".to_string() } else { cleaned }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::session_name;
-    use std::path::Path;
-
-    #[test]
-    fn names_a_session_after_the_folder() {
-        assert_eq!(session_name(Path::new("/home/inti/Code/scop")), "scop");
-    }
-
-    #[test]
-    fn replaces_awkward_characters() {
-        assert_eq!(session_name(Path::new("/tmp/my project (2)")), "my-project--2-");
-    }
-
-    #[test]
-    fn falls_back_for_the_root_directory() {
-        assert_eq!(session_name(Path::new("/")), "zellij");
-    }
-}
