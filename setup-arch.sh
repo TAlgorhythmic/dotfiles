@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PACKAGES="ark audacious easyeffects thunar thunar-archive-plugin zen-browser-bin pavucontrol gimp yay tree fastfetch xvidcore x265 x264 wl-clipboard wine-cachyos wev wavpack vulkan-tools vim unzip unrar twolame ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono swaync svt-av1 speex hyprshot sfizz sassc rustup rofi qt6-wayland qt6ct qt5-wayland qt5ct postgresql playerctl pipewire pipewire-alsa opusfile opus openssh opencore-amr openal okular obs-studio obs-vkcapture nwg-look noto-fonts noto-fonts-extra noto-fonts-emoji noto-fonts-cjk mpv neovim man-pages man-db lutris lsp-plugins lldb libwebp libvpx libvorbis libtheora libreoffice-fresh libreoffice-fresh-ca libmpeg2 libmad libheif libdv libde265 libdca libavif less lame kvantum kvantum-qt5 jdk-openjdk jdk21-openjdk jasper iwd ironbar hyprshutdown hyprshot hyprpicker hyprpaper hyprlock hyprland hypridle hwinfo gstreamer gst-plugins-ugly gst-plugins-good gst-plugins-bad gst-plugins-base gst-plugin-pipewire gst-libav gnome-keyring viu github-cli git ghostty gamemode flac filelight ffmpegthumbnailer ffmpeg fakeroot faad2 faac eww egl-wayland2 docker docker-compose docker-buildx discord dav1d dart cmake clinfo claude-code chromium calf aom a52dec eyedropper qalculate-gtk rustup curl wget adwaita-color-schemes adwaita-fonts adwaita-icon-theme"
-AUR_PACKAGES="bitwig-studio-5 decent-sampler-bin bbe"
+PACKAGES="ark audacious easyeffects thunar thunar-archive-plugin zen-browser-bin pavucontrol gimp yay tree fastfetch zig zellij xvidcore xdg-desktop-portal-hyprland x265 x264 wl-clipboard wireplumber wine-cachyos wev wavpack vulkan-tools vim valgrind unzip unrar twolame ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono tree-sitter-cli swaync svt-av1 strace speex socat sfizz sassc rustup rofi ripgrep qt6-wayland qt6ct qt5-wayland qt5ct python python-pip python-pipx postgresql playerctl pipewire pipewire-alsa pipewire-jack pipewire-pulse papirus-icon-theme opusfile opus openssh opencore-amr openal okular obs-studio obs-vkcapture nwg-look noto-fonts noto-fonts-extra noto-fonts-emoji noto-fonts-cjk nodejs npm ninja mpv neovim meson maven man-pages man-db lutris lua luarocks lsp-plugins llvm lldb lld libwebp libvpx libvorbis libtheora libreoffice-fresh libreoffice-fresh-ca libnotify libmpeg2 libmad libheif libdv libde265 libdca libavif less lame kvantum kvantum-qt5 jq jdk-openjdk jdk21-openjdk jasper iwd ironbar hyprshutdown hyprshot hyprpolkitagent hyprpicker hyprpaper hyprlock hyprland hypridle hwinfo gtk4 gtk4-layer-shell gstreamer gst-plugins-ugly gst-plugins-good gst-plugins-bad gst-plugins-base gst-plugin-pipewire gst-libav gradle go gnome-keyring viu github-cli git ghostty gdb gcc gamemode flac filelight ffmpegthumbnailer ffmpeg fakeroot faad2 faac egl-wayland2 docker docker-compose docker-buildx discord dav1d dart cmake clinfo claude-code clang chromium calf brightnessctl base-devel aom a52dec eyedropper qalculate-gtk curl wget adwaita-color-schemes adwaita-fonts adwaita-icon-theme"
+AUR_PACKAGES="eww bitwig-studio-5 decent-sampler-bin bbe"
 
 # Hardware video acceleration: the VA-API/VDPAU frontends plus diagnostic tools
 # (vainfo, vdpauinfo). libvdpau-va-gl maps VDPAU onto VA-API for the GPUs that
@@ -47,7 +47,12 @@ yay -Syu --needed ${AUR_PACKAGES}
 # TODO .profile
 # TODO zellij-picker code compile and stuff
 # TODO home bin
-# TODO set themes Orchis pink dark + 
-# TODO setup fonts
+# TODO set themes Orchis pink dark: build/install it separately, NOT from the
+#      package list -- it links against the installed libadwaita/gtk and has to
+#      match them. nwg-look expects the theme name "Orchis-Pink-Dark".
+#      The Apple-cursors cursor theme it pairs with now ships in this repo, at
+#      .local/share/icons/, so that one just needs .local applied.
+# TODO setup fonts -- IosevkaTerm Nerd Font already ships in
+#      .local/share/fonts, so this is covered by applying .local (no package)
 # TODO apply .local and .config
 # TODO sforzando
