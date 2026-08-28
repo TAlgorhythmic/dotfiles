@@ -81,10 +81,6 @@ rm -rf "$ANDROID_HOME/cmdline-tools/latest"
 mv cmdline-tools "$ANDROID_HOME/cmdline-tools/latest"
 cd .. || exit 1
 rm -rf android
-# sdkmanager stops reading once every license is accepted, so `yes` dies of
-# SIGPIPE (141) -- which pipefail would turn into a fatal error. Drop pipefail
-# for just this pipeline; without it the status is sdkmanager's own, so a real
-# failure still aborts under set -e.
 set +o pipefail
 yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$ANDROID_HOME" --licenses
 set -o pipefail
@@ -126,8 +122,9 @@ cd .. || exit 1
 echo "done"
 
 # Install orchis pink theme
-echo "Installing gtk theme (Orchis-Pink-Dark)..."
+echo "Installing themes and gtk theme (Orchis-Pink-Dark)..."
 
+cp -a .themes/ "$HOME/.themes/"
 rm -rf Orchis-theme
 git clone https://github.com/vinceliuice/Orchis-theme
 cd Orchis-theme || exit 1
@@ -146,7 +143,7 @@ cp -a .local/.  "$HOME/.local/"
 echo "done"
 
 # Install sforzando
-echo -n "Installing sforzando..."
+echo "Installing sforzando..."
 
 mkdir -p sforzando
 cd sforzando || exit 1
@@ -156,4 +153,11 @@ sudo ./install_sforzando.sh
 cd .. || exit 1
 rm -rf sforzando
 
-echo " done"
+echo "done"
+
+# Set bitwig studio
+echo "Copying bitwig studio config..."
+
+cp -a .BitwigStudio/ "$HOME/.BitwigStudio/"
+
+echo "done"
