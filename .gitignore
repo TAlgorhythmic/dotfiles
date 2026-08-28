@@ -1,0 +1,14 @@
+# Rust build output (zellij-picker also has its own .gitignore)
+target/
+
+# Editor / tool backups
+*.bak
+*.bak.[0-9]*
+*~
+*.swp
+
+# setup-arch.sh does its downloading and cloning in a mktemp dir, but keep
+# these ignored in case a run is interrupted before the trap fires.
+/android/
+/sforzando/
+/Orchis-theme/

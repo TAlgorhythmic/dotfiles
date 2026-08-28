@@ -10,7 +10,7 @@ mod sessions;
 
 use std::cell::RefCell;
 use std::os::unix::process::CommandExt;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
 use std::rc::Rc;
 
@@ -54,6 +54,14 @@ fn main() -> glib::ExitCode {
     });
     app.connect_activate(build_ui);
     app.run()
+}
+
+/// A folder's session name: its last component, as the README promises.
+/// `/` has none, and zellij rejects an empty name, so fall back to something.
+fn session_name(path: &Path) -> String {
+    path.file_name()
+        .map(|n| n.to_string_lossy().into_owned())
+        .unwrap_or_else(|| "zellij".into())
 }
 
 /// Everything the callbacks need to reach.

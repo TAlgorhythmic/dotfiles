@@ -3,16 +3,20 @@ vim.cmd("set cursorline")
 vim.cmd("set autowrite")
 vim.cmd("set autowriteall")
 vim.cmd("set bex=.bak")
-vim.cmd("set belloff=\"error,esc,hangul,lang\"")
+-- No quotes around any `:set` value: `"` starts a comment on an Ex command
+-- line, so `set complete=".,w,b"` silently sets the option to *empty* rather
+-- than to the list. That quietly disabled ins-completion and re-enabled every
+-- bell for a while.
+vim.cmd("set belloff=error,esc,hangul,lang")
 vim.cmd("set breakindent")
-vim.cmd("set bufhidden=\"hide\"")
-vim.cmd("set casemap=\"internal\"")
-vim.cmd("set cdpath=\"/home/inti/projects\"")
+vim.cmd("set bufhidden=hide")
+vim.cmd("set casemap=internal")
+vim.cmd("set cdpath=.,,~/projects")
 -- No global 'cindent': it's a C/Java indenter and becomes the fallback for any
 -- filetype without an indentexpr, which mangles them (Dart especially).
 -- Nvim's default 'autoindent' is on already; real indenters come from
 -- treesitter/ftplugin per filetype.
-vim.cmd("set complete=\".,w,b,u,,U,i,d,t\"")
+vim.cmd("set complete=.,w,b,u,U,i,d,t")
 vim.cmd("set confirm")
 vim.cmd("set noexpandtab")
 vim.cmd("set tabstop=4")
@@ -107,11 +111,9 @@ vim.cmd("hi link @type.builtin.java @type.builtin")
 local map = vim.api.nvim_set_keymap
 local optss = { noremap = true, silent = true }
 
-require("time-tracker").setup({
-	data_file = vim.fn.stdpath("data") .. "/time-tracker.db",
-	tracking_events = { "BufEnter", "BufWinEnter", "CursorMoved", "CursorMovedI", "WinScrolled" },
-	tracking_timeout_seconds = 5 * 60, -- 5 minutes
-})
+-- time-tracker is configured in lua/plugins/time-tracker.lua. Calling
+-- setup() here as well forced the plugin to load at startup, defeating its
+-- `event = "VeryLazy"`, and applied a second, different set of options.
 
 -- Mappings
 map('n', '<A-Left>', '<Cmd>BufferPrevious<CR>', optss)
@@ -149,8 +151,9 @@ map("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format{ async = true }<cr>", optss)
 map("n", "<leader>li", "<cmd>LspInfo<cr>", optss)
 map("n", "<leader>lI", "<cmd>LspInstallInfo<cr>", optss)
 map("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", optss)
-map("n", "<leader>lj", "<cmd>lua vim.diagnostic.goto_next({buffer=0})<cr>", optss)
-map("n", "<leader>lk", "<cmd>lua vim.diagnostic.goto_prev({buffer=0})<cr>", optss)
+-- goto_next/goto_prev are deprecated since 0.11; jump() replaces both.
+map("n", "<leader>lj", "<cmd>lua vim.diagnostic.jump({ count = 1, float = true })<cr>", optss)
+map("n", "<leader>lk", "<cmd>lua vim.diagnostic.jump({ count = -1, float = true })<cr>", optss)
 map("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<cr>", optss)
 map("n", "<leader>ls", "<cmd>lua vim.lsp.buf.signature_help()<CR>", optss)
 map("n", "<leader>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", optss)
@@ -165,4 +168,7 @@ map(
 )
 map('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true, silent = true })
 map('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<BS>"]], { expr = true, silent = true })
-map('i', '<CR>', [[pumvisible() ? '<Down><CR>' : '<CR>']], { noremap = true, expr = true, silent = true })
+-- NOTE: do not add a second <CR> map here. There was one using single quotes
+-- ('<Down><CR>'), which both shadowed the mapping above and, because
+-- nvim_set_keymap leaves replace_keycodes off, inserted the literal text
+-- "<Down><CR>" whenever the popup menu was open.

@@ -1,5 +1,7 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+# Keep PATH unique. ~/.profile (symlinked to ~/.zprofile) already adds ~/bin
+# and ~/.local/bin, and .zshrc runs for every interactive shell, so without
+# this a nested shell stacks duplicate entries.
+typeset -U path PATH
 
 # Path to your Oh My Zsh installation.
 export ANDROID_HOME="$HOME/Android/Sdk"

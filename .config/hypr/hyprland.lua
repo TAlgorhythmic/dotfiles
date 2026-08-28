@@ -167,7 +167,7 @@ hl.env("GTK_IM_MODULE", "simple")
 
 local pictures_dir = os.getenv("HOME") .. "/Pictures"
 hl.env("XDG_PICTURES_DIR", pictures_dir)
-hl.env("HYPRSHOT_DIR", pictures_dir .. "Screenshots")
+hl.env("HYPRSHOT_DIR", pictures_dir .. "/Screenshots")
 
 -----------------------
 ----- PERMISSIONS -----

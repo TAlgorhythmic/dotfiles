@@ -315,12 +315,15 @@ web_client {
 // The folder in which Zellij will look for layouts
 // (Requires restart)
 // 
-layout_dir "/home/inti/.config/zellij/layouts"
+// Left unset on purpose: the default is already <config dir>/layouts, and an
+// absolute path here hardcodes /home/inti.
+// layout_dir "/path/to/layouts"
  
 // The folder in which Zellij will look for themes
 // (Requires restart)
 // 
-theme_dir "/home/inti/.config/zellij/themes"
+// Same as layout_dir: the default <config dir>/themes is what we want.
+// theme_dir "/path/to/themes"
  
 // Toggle enabling the mouse mode.
 // On certain configurations, or terminals this could

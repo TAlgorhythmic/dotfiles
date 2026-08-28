@@ -31,7 +31,7 @@ Paths in the folder box are relative to `$HOME` unless they start with `/` or
 
 ## How sessions are opened
 
-`ghostty -e ~/.local/bin/zellij-attach <session>`, which attaches and then
+`ghostty -e ~/bin/zellij-attach <session>`, which attaches and then
 **kills the session when you detach**, closing the window with it. Pass
 `--keep` (via `Alt+Enter`) to detach and leave it running.
 
@@ -41,7 +41,7 @@ snapshot, so a killed session does not linger as `EXITED - attach to resurrect`.
 ## Build
 
 ```sh
-cargo build --release      # ~/.local/bin/zellij-picker symlinks to target/release/zellij-picker
+cargo build --release      # setup-arch.sh copies target/release/zellij-picker to ~/bin
 cargo test                 # path completion + session parsing
 ```
 
