@@ -105,6 +105,7 @@ source $ZSH/oh-my-zsh.sh
 #
 # Example aliases
 alias z='zellij'
+unalias rm > /dev/null
 
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
