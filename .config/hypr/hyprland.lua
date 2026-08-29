@@ -464,6 +464,8 @@ hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("term"))
 hl.window_rule({ match = { class = "^(com.scratch.ghostty)$" }, workspace = "special:term" })
 hl.window_rule({ match = { class = "^(com.scratch.ghostty)$" }, float = true })
 hl.window_rule({ match = { class = "^(com.scratch.ghostty)$" }, size = { "monitor_w*0.7", "monitor_h*0.6" } })
+hl.window_rule({ match = { class = "^.*" .. kolor .. ".*$" }, float = true })
+hl.window_rule({ match = { class = "^.*" .. calc .. ".*$" }, float = true, size = { "monitor_w*0.6", "monitor_h*0.7" } })
 hl.window_rule({ match = { class = "^(com.scratch.ghostty)$" }, center = true })
 
 hl.window_rule({  match = { class = "CheatBreaker 1.7.10" }, immediate = true, fullscreen = true })
