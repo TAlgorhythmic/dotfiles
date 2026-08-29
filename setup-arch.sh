@@ -186,3 +186,11 @@ mkdir -p "$HOME/.BitwigStudio"
 cp -a .BitwigStudio/. "$HOME/.BitwigStudio/"
 
 echo "done"
+
+# Wallpapers
+echo "Installing wallpapers..."
+
+mkdir -p "$HOME/Pictures/wallpapers"
+cp -a wallpapers/ "$HOME/Pictures"
+
+echo "done"
