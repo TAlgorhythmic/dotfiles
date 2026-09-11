@@ -128,7 +128,7 @@ map('n', '<leader><C-n>', '<Cmd>FlutterReload<CR>', optss)
 
 map('n', '<leader><Left>', '<Cmd>BufferMovePrevious<CR>', optss)
 map('n', '<leader><Right>', '<Cmd>BufferMoveNext<CR>', optss)
-map('n', '<leader>p' ,'<Cmd>BufferPin<CR>', optss)
+map('n', '<A-p>', '<Cmd>BufferPin<CR>', optss)
 map("n", "<C-c>", "<Cmd>BufferClose<CR>", optss)
 map('n', '<C-z>', 'u', optss)
 map('n', '<C-y>', '<C-r>', optss)
