@@ -2,7 +2,7 @@
 #  TASKBAR — port of the old eww bar
 #  Left  : workspaces + focused window title
 #  Center: now playing (marquee) + clock/date (calendar popup)
-#  Right : volume + network + notifications + power
+#  Right : volume + network + battery (laptops only) + notifications + power
 # ═════════════════════════════════════════════════════════════════════
 
 name: "top"
@@ -98,6 +98,43 @@ end:
   - type: "label"
     name: "network"
     label: "{{poll:12000:$HOME/.config/ironbar/scripts/network.sh}}"
+
+  # ── Battery ────────────────────────────────────────────────────────
+  # Hidden entirely on machines without a system battery: `show_if` runs
+  # has-battery.sh (pure sysfs) at startup and then once a minute, so an
+  # empty battery bay still picks up a battery inserted later.
+  # UPower's own icons are symbolic SVGs, which don't render on this system
+  # (see the calendar note in style.css), so each profile carries its glyph
+  # in `format` instead. A profile applies at or below `percent` and the
+  # lowest match wins; the top-level `format` covers anything above 80%.
+  # Click for the time-to-empty/full popup.
+  - type: "battery"
+    show_if: "60000:$HOME/.config/ironbar/scripts/has-battery.sh"
+    # Hide instantly rather than sliding out, so desktops don't see the
+    # module flash up and collapse every time the bar starts.
+    transition_type: "none"
+    show_icon: false
+    format: '<span foreground="#66BB6A" size="larger">󰁹</span> <span size="smaller">{percentage}%</span>'
+    profiles:
+      high:
+        when: { percent: 80, charging: false }
+        format: '<span foreground="#66BB6A" size="larger">󰂁</span> <span size="smaller">{percentage}%</span>'
+      good:
+        when: { percent: 60, charging: false }
+        format: '<span foreground="#66BB6A" size="larger">󰁿</span> <span size="smaller">{percentage}%</span>'
+      medium:
+        when: { percent: 40, charging: false }
+        format: '<span foreground="#66BB6A" size="larger">󰁽</span> <span size="smaller">{percentage}%</span>'
+      low:
+        when: { percent: 20, charging: false }
+        format: '<span foreground="#F44336" size="larger">󰁻</span> <span size="smaller">{percentage}%</span>'
+      critical:
+        when: { percent: 10, charging: false }
+        format: '<span foreground="#F44336" size="larger">󰂃</span> <span foreground="#F44336" size="smaller">{percentage}%</span>'
+      # `charging: true` at 100 matches every charging state, whatever the level.
+      charging:
+        when: { percent: 100, charging: true }
+        format: '<span foreground="#66BB6A" size="larger">󰂄</span> <span size="smaller">{percentage}%</span>'
 
   # ── Notifications ──────────────────────────────────────────────────
   # Native SwayNC integration: shows count/DnD state, click opens the panel.

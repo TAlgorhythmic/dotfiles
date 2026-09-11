@@ -66,10 +66,15 @@ button {
     color: var(--fg);
 }
 
-/* Cluster spacing, matching the old centerbox `:spacing` values. */
-#start > * + *  { margin-left: 16px; }
-#center > * + * { margin-left: 18px; }
-#end > * + *    { margin-left: 14px; }
+/* Cluster spacing, matching the old centerbox `:spacing` values.
+   Every module is wrapped in a GtkRevealer. The margin goes on the module
+   inside it, not on the revealer, because `show_if` only hides the module:
+   the battery's empty revealer would otherwise leave a 14px hole on
+   desktops. The element names also keep this rule ahead of single-ID
+   rules like `#network`'s `margin` shorthand. */
+#start > revealer + revealer > *  { margin-left: 16px; }
+#center > revealer + revealer > * { margin-left: 18px; }
+#end > revealer + revealer > *    { margin-left: 14px; }
 
 /* ===================================================================
  *  WORKSPACES
@@ -186,6 +191,26 @@ button {
     padding: 0 8px;
     margin: 4px 0;
     border-radius: 9px;
+}
+
+/* ===================================================================
+ *  BATTERY  (icon/percentage colours come from Pango markup in `format`;
+ *  the whole module is hidden by `show_if` on machines without one)
+ * =================================================================== */
+.battery {
+    color: var(--fg);
+    padding: 0 8px;
+    margin: 4px 0;
+    border-radius: 9px;
+}
+
+.battery:hover {
+    background-color: var(--accent-hov);
+}
+
+.popup-battery .details {
+    color: var(--fg);
+    font-size: 15px;
 }
 
 /* ===================================================================
