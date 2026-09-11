@@ -74,6 +74,8 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git alias-finder aliases ant archlinux branch brew bundler colored-man-pages common-aliases deno docker encode64 gh git-commit git-extras git-flow git-hubflow git-prompt gitfast gnu-utils jsontools kate mvn npm nvm rust sudo systemd themes vim-interaction vscode web-search)
 
+export ZSH="$HOME/.oh-my-zsh"
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
