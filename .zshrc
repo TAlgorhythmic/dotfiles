@@ -4,9 +4,7 @@
 typeset -U path PATH
 
 # Path to your Oh My Zsh installation.
-export ANDROID_HOME="$HOME/Android/Sdk"
-export ZSH="$HOME/.oh-my-zsh"
-export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$HOME/bin:$HOME/.android/bin:$HOME/flutter/bin:$HOME/.cargo/bin:$PATH"
+
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,

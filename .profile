@@ -19,6 +19,9 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
+export ANDROID_HOME="$HOME/Android/Sdk"
+export ZSH="$HOME/.oh-my-zsh"
+
 # Prepend a directory to PATH, but only once: a login shell that re-reads this
 # file (su -l, a nested login) would otherwise stack duplicate entries.
 prepend_path() {
@@ -29,11 +32,17 @@ prepend_path() {
     esac
 }
 
-# user's private bins. Prepended in this order so ~/.local/bin ends up ahead
-# of ~/bin, as it was before.
 prepend_path "$HOME/bin"
 prepend_path "$HOME/.local/bin"
+prepend_path "$HOME/.android/bin"
+prepend_path "$HOME/flutter/bin"
+prepend_path "$HOME/.cargo/bin"
+prepend_path "$ANDROID_HOME/cmdline-tools/latest/bin"
+prepend_path "$ANDROID_HOME/platform-tools"
+
 export PATH
+
+export CHROME_EXECUTABLE=chromium
 
 unset -f prepend_path
 
@@ -48,3 +57,4 @@ if [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$(tty)" = /dev/tty1 ]; t
         exec start-hyprland
     fi
 fi
+
