@@ -6,7 +6,7 @@ window {
 
 .root {
   background-color: rgba(33, 33, 33, 0.85);   /* @base      #212121 */
-  border: 1px solid rgba(240, 98, 146, 0.33);  /* @accent-soft #F0629255 */
+  border: 1px solid rgba(102, 187, 106, 0.33);  /* @accent-soft #66BB6A55 */
   border-radius: 14px;
   padding: 18px;
   color: #ffffff;                             /* @fg */
@@ -16,19 +16,19 @@ window {
 
 entry {
   background-color: rgba(44, 44, 44, 0.93);   /* @surface   #2C2C2C */
-  border: 1px solid rgba(240, 98, 146, 0.33);
+  border: 1px solid rgba(102, 187, 106, 0.33);
   border-radius: 12px;
   padding: 9px 14px;
   min-height: 0;
   color: #ffffff;
-  caret-color: #F06292;
+  caret-color: #66BB6A;
   box-shadow: none;
   outline: none;
 }
 
 entry:focus-within {
-  border-color: #F06292;                      /* @accent */
-  background-color: rgba(240, 98, 146, 0.07);
+  border-color: #66BB6A;                      /* @accent */
+  background-color: rgba(102, 187, 106, 0.07);
 }
 
 entry > text > placeholder {
@@ -63,12 +63,12 @@ list > row {
 }
 
 list > row:selected {
-  background-color: rgba(240, 98, 146, 0.13);  /* @accent-dim */
-  border-color: rgba(240, 98, 146, 0.33);
+  background-color: rgba(102, 187, 106, 0.13);  /* @accent-dim */
+  border-color: rgba(102, 187, 106, 0.33);
 }
 
 list > row:selected .name {
-  color: #F06292;
+  color: #66BB6A;
 }
 
 .name {

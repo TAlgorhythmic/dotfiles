@@ -15,9 +15,9 @@
 -- require("myColors")
 
 -- Vars
-local primary_color = "rgba(F06292ee)"   -- Orchis-Pink-Dark accent (#F06292)
-local border_color  = "rgba(F0629255)"   -- window border: 1px, deliberately faint
-local glow_color    = "rgba(F0629222)"   -- barely-there halo around the focused window
+local primary_color = "rgba(66BB6Aee)"   -- Orchis-Green-Dark accent (#66BB6A)
+local border_color  = "rgba(66BB6A55)"   -- window border: 1px, deliberately faint
+local glow_color    = "rgba(66BB6A22)"   -- barely-there halo around the focused window
 
 ------------------
 ---- MONITORS ----

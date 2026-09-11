@@ -43,7 +43,7 @@ fn main() -> glib::ExitCode {
         provider.load_from_string(include_str!("style.css"));
         if let Some(display) = Display::default() {
             // Above PRIORITY_USER: the GTK theme installed in
-            // ~/.config/gtk-4.0/gtk.css (currently Orchis-Pink-Dark) loads at
+            // ~/.config/gtk-4.0/gtk.css (currently Orchis-Green-Dark) loads at
             // USER priority and would otherwise repaint the list itself.
             gtk::style_context_add_provider_for_display(
                 &display,

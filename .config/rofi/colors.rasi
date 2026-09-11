@@ -1,13 +1,13 @@
 /* ╔══════════════════════════════════════════════════════════════════╗
  * ║  colors.rasi — shared palette                                      ║
- * ║  Mirrors the Hyprland / hyprlock accent theme (#F06292 accent).      ║
+ * ║  Mirrors the Hyprland / hyprlock accent theme (#66BB6A accent).      ║
  * ╚══════════════════════════════════════════════════════════════════╝ */
 
 * {
     /* core palette */
-    accent:        #F06292ff;   /* primary accent (matches active border / clock) */
-    accent-dim:    #F0629222;   /* translucent accent for hover/selection fills   */
-    accent-soft:   #F0629255;   /* subtle accent (borders, separators)            */
+    accent:        #66BB6Aff;   /* primary accent (matches active border / clock) */
+    accent-dim:    #66BB6A22;   /* translucent accent for hover/selection fills   */
+    accent-soft:   #66BB6A55;   /* subtle accent (borders, separators)            */
 
     base:        #212121cc;   /* window bg — translucent so Hypr blur shows     */
     base-solid:  #212121ff;

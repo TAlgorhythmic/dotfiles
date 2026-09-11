@@ -72,7 +72,7 @@ end:
   # Mimics the old eww behaviour: scroll to change, click to mute.
   # The built-in mixer popup is disabled to match.
   - type: "volume"
-    format: '<span foreground="#F06292" size="larger">{icon}</span> <span size="smaller">{percentage}%</span>'
+    format: '<span foreground="#66BB6A" size="larger">{icon}</span> <span size="smaller">{percentage}%</span>'
     mute_format: '<span foreground="#9e9e9e" size="larger">{icon}</span> <span foreground="#9e9e9e" size="smaller">{percentage}%</span>'
     show_sources: false
     max_volume: 100

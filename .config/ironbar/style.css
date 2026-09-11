@@ -5,12 +5,12 @@
  * ═══════════════════════════════════════════════════════════════════ */
 
 :root {
-    --accent:      #F06292;
-    --accent-line: rgba(240, 98, 146, 0.18);
-    --accent-edge: rgba(240, 98, 146, 0.25);
-    --accent-hov:  rgba(240, 98, 146, 0.10);
-    --accent-soft: rgba(240, 98, 146, 0.18);
-    --accent-glow: rgba(240, 98, 146, 0.55);
+    --accent:      #66BB6A;
+    --accent-line: rgba(102, 187, 106, 0.18);
+    --accent-edge: rgba(102, 187, 106, 0.25);
+    --accent-hov:  rgba(102, 187, 106, 0.10);
+    --accent-soft: rgba(102, 187, 106, 0.18);
+    --accent-glow: rgba(102, 187, 106, 0.55);
 
     --bg:          rgba(33, 33, 33, 0.92);
     --bg-bar:      rgba(33, 33, 33, 0.82);
@@ -402,8 +402,8 @@ popover > arrow {
 
 .pm-item:hover {
     background-color: var(--accent-hov);
-    border-color: rgba(240, 98, 146, 0.45);
-    box-shadow: 0 0 14px rgba(240, 98, 146, 0.25);
+    border-color: rgba(102, 187, 106, 0.45);
+    box-shadow: 0 0 14px rgba(102, 187, 106, 0.25);
 }
 
 .pm-item:hover .pm-ico {

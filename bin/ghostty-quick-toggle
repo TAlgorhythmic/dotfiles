@@ -71,5 +71,5 @@ for _ in $(seq 1 40); do
 	mapped && exit 0
 done
 
-hyprctl notify 3 5000 "rgb(f06292)" "Ghostty quick terminal failed to start" >/dev/null 2>&1
+hyprctl notify 3 5000 "rgb(66bb6a)" "Ghostty quick terminal failed to start" >/dev/null 2>&1
 exit 1

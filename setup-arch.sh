@@ -101,7 +101,7 @@ set -o pipefail
 
 [ -d "$HOME/flutter" ] || git clone -b stable https://github.com/flutter/flutter "$HOME/flutter"
 "$HOME/flutter/bin/flutter" config --android-sdk "$ANDROID_HOME"
-"$HOME/flutter/bin/flutter" config --jdk-dir /usr/lib/jvm/java-21-openjdk/
+"$HOME/flutter/bin/flutter" config --jdk-dir /usr/lib/jvm/default/
 
 echo "done"
 
@@ -135,8 +135,8 @@ cd "$REPO_DIR" || exit 1
 
 echo "done"
 
-# Install orchis pink theme
-echo "Installing themes and gtk theme (Orchis-Pink-Dark)..."
+# Install orchis green theme
+echo "Installing themes and gtk theme (Orchis-Green-Dark)..."
 
 # `cp -a .themes/ ~/.themes/` would copy the directory *into* an existing
 # destination (~/.themes/.themes); the trailing `/.` copies its contents.
@@ -144,7 +144,12 @@ mkdir -p "$HOME/.themes"
 cp -a .themes/. "$HOME/.themes/"
 git clone https://github.com/vinceliuice/Orchis-theme "$BUILD_DIR/Orchis-theme"
 cd "$BUILD_DIR/Orchis-theme" || exit 1
-./install.sh -t pink -c dark -s standard -l
+./install.sh -t green -c dark -s standard -l
+cd "$REPO_DIR" || exit 1
+
+git clone https://github.com/yeyushengfan258/Reversal-icon-theme "$BUILD_DIR/Icons"
+cd "$BUILD_DIR/Icons" || exit 1
+./install.sh -t green
 cd "$REPO_DIR" || exit 1
 
 echo "done"
@@ -184,13 +189,5 @@ echo "Copying bitwig studio config..."
 # created ~/.BitwigStudio by this point, and a bare `/` would nest inside it.
 mkdir -p "$HOME/.BitwigStudio"
 cp -a .BitwigStudio/. "$HOME/.BitwigStudio/"
-
-echo "done"
-
-# Wallpapers
-echo "Installing wallpapers..."
-
-mkdir -p "$HOME/Pictures/wallpapers"
-cp -a wallpapers/ "$HOME/Pictures"
 
 echo "done"

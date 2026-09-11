@@ -1,6 +1,6 @@
 /* ╔══════════════════════════════════════════════════════════════════╗
  * ║  theme.rasi — main launcher look                                   ║
- * ║  Centered, translucent, pink-accented to match Hyprland.          ║
+ * ║  Centered, translucent, green-accented to match Hyprland.         ║
  * ╚══════════════════════════════════════════════════════════════════╝ */
 
 @import "colors.rasi"
@@ -114,7 +114,7 @@ element-icon {
 
 element-text {
     vertical-align:   0.5;
-    highlight:        bold #F06292ff;   /* highlight matched chars in accent (literal: highlight rejects vars) */
+    highlight:        bold #66BB6Aff;   /* highlight matched chars in accent (literal: highlight rejects vars) */
     background-color: transparent;
     text-color:       inherit;
 }
