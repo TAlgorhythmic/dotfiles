@@ -468,7 +468,7 @@ hl.window_rule({ match = { class = "^.*" .. kolor .. ".*$" }, float = true })
 hl.window_rule({ match = { class = "^.*" .. calc .. ".*$" }, float = true, size = { "monitor_w*0.6", "monitor_h*0.7" } })
 hl.window_rule({ match = { class = "^(com.scratch.ghostty)$" }, center = true })
 
-hl.window_rule({ match = { class = "Waydroid" }, float = true, size = { 524, 1069 } })
+hl.window_rule({ match = { class = "Waydroid" }, float = true, center = true, })
 hl.window_rule({ match = { class = "CheatBreaker 1.7.10" }, immediate = true, fullscreen = true })
 hl.window_rule({ match = { class = "CheatBreaker 1.8.9" }, immediate = true, fullscreen = true })
 hl.window_rule({ match = { class = "^Minecraft.*$" }, immediate = true, fullscreen = true })
