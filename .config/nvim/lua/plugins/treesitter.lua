@@ -1,30 +1,56 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
-	-- Upstream moved default HEAD to `main`, which is an incompatible rewrite
-	-- (no more nvim-treesitter.configs). Pin to master to keep this config.
-	branch = "master",
+	-- `main` is a full, incompatible rewrite. The plugin is now *only* a
+	-- parser/query installer: no `nvim-treesitter.configs`, no modules. The
+	-- features it used to switch on are Neovim's, and we opt in below.
+	-- The old `master` pin is frozen against Nvim 0.11 and was steadily
+	-- breaking on 0.12 (see git history for the predicate shim this replaces).
+	branch = "main",
+	lazy = false, -- main explicitly does not support lazy-loading
 	build = ":TSUpdate",
 	config = function()
-		-- Must run before any query is evaluated; see the file for why.
-		require("ts-predicate-compat")
+		local ts = require("nvim-treesitter")
 
-		-- Master's frozen lockfile pins tree-sitter-dart to 80e23c0 (2025-02),
-		-- which predates Dart 3.10 dot shorthands (`.all(18)`, `.min`). Those
-		-- parse as ERROR nodes and indent stops nesting inside the enclosing
-		-- call. This newer grammar parses them; master's dart queries still
-		-- load against it. After changing the revision, run :TSUpdate dart.
-		require("nvim-treesitter.parsers").get_parser_configs().dart.install_info.revision =
-			"be07cf7118d3dba06236a3f19541685a68209934"
+		-- Parsers and queries install into `stdpath('data')/site`, already on
+		-- the default runtimepath, so no setup() call is needed to find them.
+		-- install() is async and a no-op for whatever is already present.
+		--
+		-- master resolved parser dependencies implicitly; main does not, so
+		-- markdown_inline has to be listed alongside markdown.
+		ts.install({
+			"angular", "astro", "bash", "c", "cmake", "cpp", "css", "csv",
+			"cuda", "dart", "dockerfile", "groovy", "html", "http", "java",
+			"javascript", "json", "json5", "jsonnet", "kotlin", "llvm", "lua",
+			"make", "markdown", "markdown_inline", "meson", "ninja",
+			"powershell", "printf", "python", "ruby", "rust", "scala", "sql",
+			"tsx", "typescript", "vue", "yaml", "zig",
+		})
 
-		local config = require("nvim-treesitter.configs")
-		config.setup({
-			ensure_installed = { "c", "lua", "javascript", "html", "css", "angular", "astro", "bash", "cmake", "cpp", "csv", "cuda", "dart", "dockerfile", "groovy", "http", "java", "javascript", "json", "json5", "jsonnet", "kotlin", "llvm", "make", "markdown", "meson", "ninja", "powershell", "printf", "python", "ruby", "rust", "scala", "sql", "tsx", "typescript", "vue", "yaml", "zig" },
-			highlight = { enable = true, additional_vim_regex_highlighting = false },
-			-- c/cpp/java/typescript/tsx used to be disabled here because indent
-			-- came out flat or mangled. That was the query-predicate crash fixed
-			-- in ts-predicate-compat.lua, plus two missing query patterns now
-			-- supplied by queries/{cpp,java}/indents.scm. All verified working.
-			indent = { enable = true },
+		-- `highlight`/`indent` used to be flags in configs.setup. On main every
+		-- buffer opts in itself.
+		vim.api.nvim_create_autocmd("FileType", {
+			group = vim.api.nvim_create_augroup("user_treesitter", { clear = true }),
+			callback = function(args)
+				local lang = vim.treesitter.language.get_lang(args.match)
+				if not lang then
+					return
+				end
+				-- start() asserts on a missing parser, which would throw for
+				-- every filetype outside the list above.
+				if not pcall(vim.treesitter.start, args.buf, lang) then
+					return
+				end
+				-- The highlighter clears `syntax` itself, so this is already
+				-- master's `additional_vim_regex_highlighting = false`.
+
+				-- Only claim indentexpr where an indents query exists: without
+				-- one nvim-treesitter's indent returns 0 for every line and
+				-- flattens the file. This is what queries/{cpp,java}/indents.scm
+				-- extend.
+				if vim.treesitter.query.get(lang, "indents") then
+					vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+				end
+			end,
 		})
 	end,
 }
