@@ -156,9 +156,10 @@ echo "done"
 
 # apply .local and .config
 echo "Installing dotfiles..."
-mkdir -p "$HOME/.config" "$HOME/.local"
+mkdir -p "$HOME/.config" "$HOME/.local" "$HOME/.claude"
 cp -a .config/. "$HOME/.config/"
 cp -a .local/.  "$HOME/.local/"
+cp -a .claude/. "$HOME/.claude/"
 
 echo "done"
 
