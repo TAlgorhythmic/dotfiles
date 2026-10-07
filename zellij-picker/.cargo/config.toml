@@ -1,0 +1,3 @@
+# Same key as ~/.cargo/config.toml so the arrays merge (keeps mold); build.rustflags would be ignored
+[target.'cfg(target_os = "linux")']
+rustflags = ["-C", "target-cpu=native"]

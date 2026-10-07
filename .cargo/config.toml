@@ -1,0 +1,26 @@
+[alias]     # command aliases
+b = "build"
+c = "check"
+t = "test"
+r = "run"
+rr = "run --release"
+bn = ["build", "--release", "--target", "x86_64-unknown-linux-gnu", "--config", "target.x86_64-unknown-linux-gnu.rustflags=['-C','target-cpu=native']"]
+
+[target.'cfg(target_os = "linux")']
+rustflags = ["-C", "link-arg=-fuse-ld=mold"]
+
+[profile.dev]
+opt-level = 0
+debug = true
+split-debuginfo = "unpacked" # keeps debuginfo out of the link step
+incremental = true
+codegen-units = 256
+
+[profile.release]
+opt-level = 3
+debug = false
+strip = true
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+incremental = false

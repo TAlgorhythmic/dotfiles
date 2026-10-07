@@ -105,6 +105,7 @@ source $ZSH/oh-my-zsh.sh
 #
 # Example aliases
 alias z='zellij'
+alias cbb='cargo build --release && cargo bn'
 unalias rm > /dev/null
 
 # alias zshconfig="mate ~/.zshrc"

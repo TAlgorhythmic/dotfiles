@@ -43,7 +43,8 @@ prepend_path "$ANDROID_HOME/build-tools/36.0.0"
 
 export PATH
 
-export CHROME_EXECUTABLE=chromium
+export CHROME_EXECUTABLE=zen-browser
+export BROWSER=zen-browser
 
 unset -f prepend_path
 
