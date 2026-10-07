@@ -39,6 +39,7 @@ prepend_path "$HOME/flutter/bin"
 prepend_path "$HOME/.cargo/bin"
 prepend_path "$ANDROID_HOME/cmdline-tools/latest/bin"
 prepend_path "$ANDROID_HOME/platform-tools"
+prepend_path "$ANDROID_HOME/build-tools/36.0.0"
 
 export PATH
 
