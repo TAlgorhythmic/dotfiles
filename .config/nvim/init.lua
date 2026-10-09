@@ -134,6 +134,7 @@ map('n', '<C-z>', 'u', optss)
 map('n', '<C-y>', '<C-r>', optss)
 map('i', '<C-z>', '<C-o>u', optss)
 map('i', '<C-y>', '<C-o><C-r>', optss)
+map('i', '<Esc>', '<Esc><cmd>update<cr>', optss) -- Auto save
 map('t', "<C-Up>", [[<C-\><C-n><C-w>k]], optss)
 map('t', '<C-Left>', [[<C-\><C-n><C-w>h]], optss)
 map('t', '<C-Right>', [[<C-\><C-n><C-w>l]], optss)

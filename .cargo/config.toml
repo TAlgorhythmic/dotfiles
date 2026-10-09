@@ -4,6 +4,7 @@ c = "check"
 t = "test"
 r = "run"
 rr = "run --release"
+br = "build --release"
 bn = ["build", "--release", "--target", "x86_64-unknown-linux-gnu", "--config", "target.x86_64-unknown-linux-gnu.rustflags=['-C','target-cpu=native']"]
 
 [target.'cfg(target_os = "linux")']
