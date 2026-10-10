@@ -3,19 +3,11 @@ vim.cmd("set cursorline")
 vim.cmd("set autowrite")
 vim.cmd("set autowriteall")
 vim.cmd("set bex=.bak")
--- No quotes around any `:set` value: `"` starts a comment on an Ex command
--- line, so `set complete=".,w,b"` silently sets the option to *empty* rather
--- than to the list. That quietly disabled ins-completion and re-enabled every
--- bell for a while.
 vim.cmd("set belloff=error,esc,hangul,lang")
 vim.cmd("set breakindent")
 vim.cmd("set bufhidden=hide")
 vim.cmd("set casemap=internal")
 vim.cmd("set cdpath=.,,~/projects")
--- No global 'cindent': it's a C/Java indenter and becomes the fallback for any
--- filetype without an indentexpr, which mangles them (Dart especially).
--- Nvim's default 'autoindent' is on already; real indenters come from
--- treesitter/ftplugin per filetype.
 vim.cmd("set complete=.,w,b,u,U,i,d,t")
 vim.cmd("set confirm")
 vim.cmd("set noexpandtab")
@@ -23,6 +15,9 @@ vim.cmd("set tabstop=4")
 vim.cmd("set softtabstop=4")
 vim.cmd("set shiftwidth=4")
 vim.cmd("set number")
+vim.opt.showmode = false
+vim.opt.showcmdloc = "statusline"
+vim.opt.statusline = "%S%=%l,%c%V  %P"
 
 -- Set leaders before loading lazy.nvim so plugin mappings are correct.
 vim.g.mapleader = " "
@@ -120,20 +115,10 @@ map('n', '<A-Left>', '<Cmd>BufferPrevious<CR>', optss)
 map('n', '<A-Right>', '<Cmd>BufferNext<CR>', optss)
 map('n', '<C-D>', '<Cmd>NvimTreeToggle<CR>', optss)
 
--- Flutter
-map('n', '<leader><C-r>', '<Cmd>FlutterRun<CR>', optss)
-map('n', '<leader><C-h>', '<Cmd>FlutterDebug<CR>', optss)
-map('n', '<leader><C-f>', '<Cmd>FlutterEmulators<CR>', optss)
-map('n', '<leader><C-n>', '<Cmd>FlutterReload<CR>', optss)
-
 map('n', '<leader><Left>', '<Cmd>BufferMovePrevious<CR>', optss)
 map('n', '<leader><Right>', '<Cmd>BufferMoveNext<CR>', optss)
-map('n', '<A-p>', '<Cmd>BufferPin<CR>', optss)
+map('n', '-', '<Cmd>Oil<CR>', optss)
 map("n", "<C-c>", "<Cmd>BufferClose<CR>", optss)
-map('n', '<C-z>', 'u', optss)
-map('n', '<C-y>', '<C-r>', optss)
-map('i', '<C-z>', '<C-o>u', optss)
-map('i', '<C-y>', '<C-o><C-r>', optss)
 map('i', '<Esc>', '<Esc><cmd>update<cr>', optss) -- Auto save
 map('t', "<C-Up>", [[<C-\><C-n><C-w>k]], optss)
 map('t', '<C-Left>', [[<C-\><C-n><C-w>h]], optss)
@@ -145,14 +130,13 @@ map('n', '<C-Down>', [[<C-\><C-n><C-w>j]], optss)
 map("n", "<leader>1", "<cmd>lua vim.lsp.buf.definition()<CR>", optss)
 map("n", "<leader>2", '<cmd>lua vim.lsp.buf.code_action()<CR>', optss)
 map("n", "<leader>3", "<cmd>lua vim.lsp.buf.hover()<CR>", optss)
-map("n", "<leader>4", "<cmd>lua vim.lsp.buf.references()<CR>", optss)
-map("n", "<leader>5", "<cmd>Telescope lsp_references<CR>", optss)
+map("n", "<leader>4", "<cmd>Telescope lsp_references<CR>", optss)
+map("n", "<leader>5", "<cmd>lua vim.lsp.buf.references()<CR>", optss)
 map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", optss)
 map("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format{ async = true }<cr>", optss)
 map("n", "<leader>li", "<cmd>LspInfo<cr>", optss)
 map("n", "<leader>lI", "<cmd>LspInstallInfo<cr>", optss)
 map("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", optss)
--- goto_next/goto_prev are deprecated since 0.11; jump() replaces both.
 map("n", "<leader>lj", "<cmd>lua vim.diagnostic.jump({ count = 1, float = true })<cr>", optss)
 map("n", "<leader>lk", "<cmd>lua vim.diagnostic.jump({ count = -1, float = true })<cr>", optss)
 map("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<cr>", optss)

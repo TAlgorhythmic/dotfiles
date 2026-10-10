@@ -1,7 +1,7 @@
 return {
 	"mfussenegger/nvim-jdtls",
 	config = function()
-		local dir = vim.fs.dirname(vim.fs.find({'gradlew', 'mvnw', 'pom.xml'}, { upward = false })[1])
+		local dir = vim.fs.root(0, { 'gradlew', 'mvnw', 'pom.xml' })
 		if dir == nil then
 			return
 		end

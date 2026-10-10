@@ -48,7 +48,7 @@
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
 font-family = IosevkaTerm Nerd Font Extended
-font-size = 15
+font-size = 14
 window-padding-x = 0
 window-padding-y = 0
 window-padding-balance = true
@@ -56,14 +56,9 @@ background = "#000000"
 background-opacity = 0.67
 mouse-scroll-multiplier = 0.5
 
-# Quick terminal (Quake-style dropdown) — Linux support via wlr-layer-shell (1.2+)
+# Quick terminal
 quick-terminal-position = right
 quick-terminal-size = 45%,40%
 quick-terminal-screen = mouse
-# Autohide MUST stay off: with it on the terminal hides itself on focus loss
-# without the toggle state following, so the next SUPER+Q press "hides" an
-# already-hidden terminal and it never comes back. Verified by screenshot.
 quick-terminal-autohide = false
-# Registered with the XDG GlobalShortcuts portal; the trigger below is only a
-# suggestion — Hyprland binds it via `hyprctl globalshortcuts` / dispatcher `global`.
 keybind = global:super+q=toggle_quick_terminal
