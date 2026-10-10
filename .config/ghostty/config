@@ -50,6 +50,8 @@
 font-family = IosevkaTerm Nerd Font Extended
 font-size = 15
 window-padding-x = 0
+window-padding-y = 0
+window-padding-balance = true
 background = "#000000"
 background-opacity = 0.67
 mouse-scroll-multiplier = 0.5
