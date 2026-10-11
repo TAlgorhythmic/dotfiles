@@ -119,7 +119,10 @@ map('n', '<leader><Left>', '<Cmd>BufferMovePrevious<CR>', optss)
 map('n', '<leader><Right>', '<Cmd>BufferMoveNext<CR>', optss)
 map('n', '-', '<Cmd>Oil<CR>', optss)
 map("n", "<C-c>", "<Cmd>BufferClose<CR>", optss)
-map('i', '<Esc>', '<Esc><cmd>update<cr>', optss) -- Auto save
+-- Close the popup menu if open, otherwise leave insert mode and auto save
+vim.keymap.set('i', '<Esc>', function()
+	return vim.fn.pumvisible() == 1 and '<C-e>' or '<Esc><Cmd>silent! update<CR>'
+end, { expr = true, silent = true })
 map('t', "<C-Up>", [[<C-\><C-n><C-w>k]], optss)
 map('t', '<C-Left>', [[<C-\><C-n><C-w>h]], optss)
 map('t', '<C-Right>', [[<C-\><C-n><C-w>l]], optss)
@@ -144,7 +147,6 @@ map("n", "<leader>ls", "<cmd>lua vim.lsp.buf.signature_help()<CR>", optss)
 map("n", "<leader>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", optss)
 map("n", "<A-o>", "<Cmd>lua require('jdtls').organize_imports()<CR>", optss)
 map("i", "<A-o>", "<Cmd>lua require('jdtls').organize_imports()<CR>", optss)
-map('i', '<Esc>', [[pumvisible() ? "\<C-e>" : "\<Esc>"]], { expr = true, silent = true })
 map(
 	"i",
 	"<CR>",
