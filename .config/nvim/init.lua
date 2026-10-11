@@ -103,6 +103,13 @@ vim.cmd("hi link @lsp.type.modifier.java Keyword")
 vim.cmd("hi link @keyword.type.java Keyword")
 vim.cmd("hi link @type.builtin.java @type.builtin")
 
+-- Auto save. Only normal file buffers: writing an oil buffer would apply its file operations.
+vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
+	callback = function()
+		if vim.bo.buftype == "" then vim.cmd("silent! update") end
+	end,
+})
+
 local map = vim.api.nvim_set_keymap
 local optss = { noremap = true, silent = true }
 
@@ -119,10 +126,7 @@ map('n', '<leader><Left>', '<Cmd>BufferMovePrevious<CR>', optss)
 map('n', '<leader><Right>', '<Cmd>BufferMoveNext<CR>', optss)
 map('n', '-', '<Cmd>Oil<CR>', optss)
 map("n", "<C-c>", "<Cmd>BufferClose<CR>", optss)
--- Close the popup menu if open, otherwise leave insert mode and auto save
-vim.keymap.set('i', '<Esc>', function()
-	return vim.fn.pumvisible() == 1 and '<C-e>' or '<Esc><Cmd>silent! update<CR>'
-end, { expr = true, silent = true })
+map('i', '<Esc>', [[pumvisible() ? "\<C-e>" : "\<Esc>"]], { expr = true, silent = true })
 map('t', "<C-Up>", [[<C-\><C-n><C-w>k]], optss)
 map('t', '<C-Left>', [[<C-\><C-n><C-w>h]], optss)
 map('t', '<C-Right>', [[<C-\><C-n><C-w>l]], optss)
