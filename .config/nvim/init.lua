@@ -105,6 +105,7 @@ vim.cmd("hi link @type.builtin.java @type.builtin")
 
 -- Auto save. Only normal file buffers: writing an oil buffer would apply its file operations.
 vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
+	nested = true,
 	callback = function()
 		if vim.bo.buftype == "" then vim.cmd("silent! update") end
 	end,
