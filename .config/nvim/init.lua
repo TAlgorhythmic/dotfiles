@@ -14,6 +14,10 @@ vim.cmd("set noexpandtab")
 vim.cmd("set tabstop=4")
 vim.cmd("set softtabstop=4")
 vim.cmd("set shiftwidth=4")
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "javascriptreact", "typescriptreact", "dart" },
+	command = "setlocal tabstop=2 softtabstop=2 shiftwidth=2",
+})
 vim.cmd("set number")
 vim.opt.showmode = false
 vim.opt.showcmdloc = "statusline"
