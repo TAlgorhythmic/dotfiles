@@ -401,6 +401,7 @@ hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("ghostty --class=com.scratch.ghostty"
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(os.getenv("HOME") .. "/bin/ghostty-quick-toggle"))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 --hl.bind(mainMod .. " + A", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/eww/scripts/launch.sh")) -- mouse accel profile picker
+hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/eww/scripts/tablet-menu.sh")) -- tablet audio controls
 hl.bind(mainMod .. " + K", hl.dsp.exec_cmd(kolor))
 hl.bind(mainMod .. " + masculine", hl.dsp.exec_cmd(calc))
 hl.bind(mainMod .. " + C", hl.dsp.window.close())

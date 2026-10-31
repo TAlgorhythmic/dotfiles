@@ -32,6 +32,8 @@
     (label :class "hint" :halign "center"
       :text "↑↓/jk move   ↵ select   1·2 jump   esc close")))
 
+(include "./tablet.yuck")
+
 (defwindow accel-menu
   :monitor 0
   :stacking "overlay"

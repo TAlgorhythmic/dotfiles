@@ -1,0 +1,38 @@
+;; ─────────────────────────────────────────────
+;;  Tablet audio stream controls
+;; ─────────────────────────────────────────────
+
+(defpoll tablet-status :interval "1s"
+  :initial '{"state":"off","delay_ms":0,"underruns":0,"corrections":0}'
+  `$HOME/bin/tablet-audio status`)
+
+;; Read from the tablet when the window opens (by tablet-menu.sh)
+(defvar tablet-volume 0)
+
+(defwidget tablet-audio-content []
+  (box :class "menu tablet-audio" :orientation "v" :space-evenly false :spacing 10
+    (box :class "header" :orientation "h" :space-evenly false :valign "center"
+      (label :class "title" :text "󰋋  Tablet Audio" :hexpand true :halign "start")
+      (button :class "close" :onclick "$HOME/.config/eww/scripts/tablet-menu.sh" "✕"))
+    (button :class {"profile" + (tablet-status.state == "off" ? "" : " active")}
+            :onclick "$HOME/bin/tablet-audio toggle &"
+      (box :orientation "h" :space-evenly false :spacing 12 :valign "center"
+        (label :class "p-icon" :text "󰐥")
+        (box :orientation "v" :space-evenly false :spacing 2 :hexpand true
+          (label :class "p-title" :halign "start"
+            :text {tablet-status.state == "off" ? "Off" : tablet-status.state == "waiting" ? "Waiting for tablet" : "Streaming"})
+          (label :class "p-desc" :halign "start"
+            :text {tablet-status.state == "streaming"
+              ? "${tablet-status.delay_ms} ms tablet delay · ${tablet-status.underruns} underruns · 44.1 kHz"
+              : "Click to ${tablet-status.state == "off" ? "start" : "stop"}"}))))
+    (box :class "volume" :orientation "h" :space-evenly false :spacing 12 :valign "center"
+      (label :class "p-icon" :text "󰕾")
+      (scale :hexpand true :min 0 :max 61 :round-digits 0 :value tablet-volume :timeout "2s"
+             :onchange "$HOME/bin/tablet-audio set-volume {}"))))
+
+(defwindow tablet-audio
+  :monitor 0
+  :stacking "overlay"
+  :focusable false
+  :geometry (geometry :x "8px" :y "8px" :width "360px" :anchor "top right")
+  (tablet-audio-content))

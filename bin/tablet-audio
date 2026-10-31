@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+# Streams PC audio into the tablet's Android mixer over adb, so its Dirac tuning still applies.
+# Usage: tablet-audio <toggle|status|get-volume|set-volume N|run|teardown>
+set -euo pipefail
+
+config_dir="$HOME/.config/tablet-audio"
+cache_dir="$HOME/.cache/tablet-audio"
+stats_file="$cache_dir/stats"
+previous_sink_file="$cache_dir/previous-sink"
+previous_bypass_file="$cache_dir/previous-easyeffects-bypass"
+remote_jar=/data/local/tmp/tablet-audio.jar
+local_jar="$cache_dir/tablet-audio.jar"
+sink=tablet_audio
+# The tablet's mixer and HAL run at 44.1 kHz/16-bit, so matching them skips its resampler.
+rate=44100
+# Over 75-90 s soaks, 50 ms underruns repeatedly (worse with EasyEffects in the path) and 100 ms does not.
+buffer_ms=100
+music_stream=3
+
+mkdir -p "$cache_dir"
+
+build_player() {
+    [[ "$local_jar" -nt "$config_dir/TabletAudio.java" ]] && return
+    local sdk="${ANDROID_HOME:-$HOME/Android/Sdk}" android_jar classes
+    android_jar="$(ls -d "$sdk"/platforms/android-*/android.jar | sort -V | head -1)"
+    classes="$(mktemp -d)"
+    javac --release 8 -nowarn -cp "$android_jar" -d "$classes" "$config_dir/TabletAudio.java"
+    "$(ls -d "$sdk"/build-tools/*/d8 | sort -V | tail -1)" --min-api 25 --lib "$android_jar" \
+        --output "$local_jar" "$classes"/*.class
+    rm -rf "$classes"
+}
+
+setup_pc_audio() {
+    local current_sink
+    current_sink="$(pactl get-default-sink)"
+    [[ "$current_sink" == "$sink" ]] || echo "$current_sink" > "$previous_sink_file"
+    # 44.1 kHz music then reaches the tablet untouched; only 48 kHz sources get resampled, once.
+    pw-metadata -n settings 0 clock.force-rate "$rate" >/dev/null
+    pactl list short sinks | grep -q "^[0-9]*\s$sink\s" ||
+        pactl load-module module-null-sink sink_name="$sink" rate="$rate" format=s16le channels=2 \
+            channel_map=front-left,front-right sink_properties=device.description=Tablet >/dev/null
+    pactl set-default-sink "$sink"
+    # EasyEffects is tuned for the PC's own output and would stack on top of Dirac.
+    # -b also launches the app when it isn't running, so only touch a running one.
+    if pgrep -x easyeffects >/dev/null; then
+        easyeffects -b 3 > "$previous_bypass_file"
+        easyeffects -b 1
+    fi
+}
+
+teardown() {
+    rm -f "$stats_file"
+    [[ -f "$previous_sink_file" ]] && pactl set-default-sink "$(cat "$previous_sink_file")"
+    pactl list short modules | awk -v sink="sink_name=$sink" '$0 ~ sink { print $1 }' |
+        xargs -r -n1 pactl unload-module
+    pw-metadata -n settings 0 clock.force-rate 0 >/dev/null
+    if [[ -f "$previous_bypass_file" ]]; then
+        [[ "$(cat "$previous_bypass_file")" == 1 ]] || easyeffects -b 2
+        rm "$previous_bypass_file"
+    fi
+}
+
+stream_once() {
+    # stdbuf: pw-record's stdio buffering would otherwise add about 23 ms.
+    stdbuf -o0 pw-record --target "$sink" -P stream.capture.sink=true --rate "$rate" --format s16 \
+        --channels 2 --latency 256 --raw - |
+        adb shell -T "CLASSPATH=$remote_jar exec app_process / TabletAudio $buffer_ms" |
+        while read -r stats; do echo "$stats" > "$stats_file"; done
+}
+
+run() {
+    build_player
+    setup_pc_audio
+    while true; do
+        adb wait-for-usb-device
+        adb push -q "$local_jar" "$remote_jar" >/dev/null || true
+        stream_once || true
+        rm -f "$stats_file"
+        sleep 1
+    done
+}
+
+status() {
+    local state=off delay_ms=0 underruns=0 corrections=0
+    if systemctl --user -q is-active tablet-audio; then
+        state=waiting
+        if [[ -n "$(find "$stats_file" -newermt '-3 seconds' 2>/dev/null)" ]]; then
+            state=streaming
+            read -r delay_ms underruns corrections < "$stats_file"
+        fi
+    fi
+    printf '{"state":"%s","delay_ms":%s,"underruns":%s,"corrections":%s}\n' \
+        "$state" "$delay_ms" "$underruns" "$corrections"
+}
+
+# Android 7 has no `media volume`; 3 is IAudioService.setStreamVolume.
+set_volume() { adb shell service call audio 3 i32 "$music_stream" i32 "${1%.*}" i32 0 s16 com.android.shell >/dev/null; }
+
+get_volume() {
+    adb shell dumpsys audio | awk '
+        /- STREAM_MUSIC:/ { found = 1 }
+        found && /Current:/ { current = $0 }
+        found && /Devices:/ {
+            match(current, "\\(" $2 "\\): [0-9]+")
+            volume = substr(current, RSTART, RLENGTH)
+            sub(/.*: /, "", volume)
+            print volume
+            exit
+        }'
+}
+
+case "${1:-}" in
+    toggle)
+        if systemctl --user -q is-active tablet-audio; then
+            systemctl --user stop tablet-audio
+        else
+            systemctl --user start tablet-audio
+        fi
+        ;;
+    status) status ;;
+    get-volume) get_volume ;;
+    set-volume) set_volume "${2:?missing volume}" ;;
+    run) run ;;
+    teardown) teardown ;;
+    *) echo "usage: tablet-audio <toggle|status|get-volume|set-volume N|run|teardown>" >&2; exit 1 ;;
+esac

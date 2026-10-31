@@ -1,0 +1,8 @@
+[Unit]
+Description=Stream PC audio to the tablet over adb
+After=pipewire-pulse.service
+
+[Service]
+Environment=PATH=%h/Android/Sdk/platform-tools:%h/bin:/usr/local/bin:/usr/bin
+ExecStart=%h/bin/tablet-audio run
+ExecStopPost=%h/bin/tablet-audio teardown
