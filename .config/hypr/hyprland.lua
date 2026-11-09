@@ -44,6 +44,7 @@ local music			= "audacious"
 local browser		= "zen-browser"
 local kolor			= "eyedropper"
 local calc			= "qalculate-gtk"
+local vmManager		= "vm-curator"
 
 -------------------
 ---- AUTOSTART ----
@@ -407,6 +408,7 @@ hl.bind(mainMod .. " + masculine", hl.dsp.exec_cmd(calc))
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd(music))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(terminal .. " -e " .. fileManager))
+hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(terminal .. " -e " .. vmManager))
 hl.bind(mainMod .. " + F", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd(os.getenv("HOME") .. "/bin/zellij-picker")) -- zellij session picker
