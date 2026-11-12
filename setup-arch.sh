@@ -185,13 +185,3 @@ sudo ./install_sforzando.sh
 cd "$REPO_DIR" || exit 1
 
 echo "done"
-
-# Set bitwig studio
-echo "Copying bitwig studio config..."
-
-# Same trailing-`/.` rule as ~/.themes above: Bitwig has usually already
-# created ~/.BitwigStudio by this point, and a bare `/` would nest inside it.
-mkdir -p "$HOME/.BitwigStudio"
-cp -a .BitwigStudio/. "$HOME/.BitwigStudio/"
-
-echo "done"
